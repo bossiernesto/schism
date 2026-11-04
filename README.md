@@ -14,7 +14,7 @@ by adding `schism` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:schism, "~> 1.0", only: [:dev, :test]}
+    {:schism, "~> 1.1", only: [:dev, :test]}
   ]
 end
 ```
@@ -45,6 +45,22 @@ This api is useful for testing and development in conjunction with tools like
 [local cluster](https://github.com/whitfin/local-cluster) and [propcheck](https://github.com/alfert/propcheck).
 
 It is not recommended that you use this in production.
+
+## OTP 25 and later
+
+OTP 25 enables `prevent_overlapping_partitions` by default. Schism
+intentionally creates overlapping partitions while testing, so disable that
+kernel option when starting the BEAM:
+
+```shell
+./bin/test
+```
+
+The wrapper forwards additional arguments to `mix test`, for example
+`./bin/test test/schism_test.exs`.
+
+For other test runners, add `-kernel prevent_overlapping_partitions false` to
+the VM arguments used to start the test node.
 
 ## Things Schism doesn't do
 

@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ERL_FLAGS="${ERL_FLAGS:-} -kernel prevent_overlapping_partitions false" mix test "$@"

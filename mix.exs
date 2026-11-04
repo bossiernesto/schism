@@ -4,17 +4,16 @@ defmodule Schism.MixProject do
   def project do
     [
       app: :schism,
-      version: "1.0.1",
-      elixir: "~> 1.7",
+      version: "1.1.0",
+      elixir: "~> 1.20",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       aliases: aliases(),
-
       description: description(),
       package: package(),
       name: "Schism",
       source_url: "https://github.com/keathley/schism",
-      docs: docs(),
+      docs: docs()
     ]
   end
 
@@ -28,15 +27,15 @@ defmodule Schism.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:credo, "~> 1.5", only: [:dev, :test]},
-      {:local_cluster, "~> 1.0", only: [:dev, :test]},
-      {:ex_doc, "~> 0.19", only: [:dev, :test]},
+      {:credo, "~> 1.7", only: [:dev, :test]},
+      {:local_cluster, "~> 2.1", only: [:dev, :test]},
+      {:ex_doc, "~> 0.40", only: [:dev, :test]}
     ]
   end
 
   def aliases do
     [
-      test: "test --no-start",
+      test: "test --no-start"
     ]
   end
 
@@ -51,13 +50,13 @@ defmodule Schism.MixProject do
     [
       name: "schism",
       licenses: ["MIT"],
-      links: %{"GitHub" => "https://github.com/keathley/schism"},
+      links: %{"GitHub" => "https://github.com/keathley/schism"}
     ]
   end
 
   def docs do
     [
-      main: "Schism",
+      main: "Schism"
     ]
   end
 end
