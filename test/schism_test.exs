@@ -52,15 +52,37 @@ defmodule SchismTest do
     end
   end
 
-  test "returns the partition nodes and applies an explicit cookie", %{nodes: nodes} do
+  test "returns the nodes and reuses an explicit partition ID", %{nodes: nodes} do
     partition = Enum.take(nodes, 2)
     cookie = "explicit-partition-cookie"
 
     assert Schism.partition(partition, cookie) == partition
 
+    [first | rest] = partition
+    partition_cookie = :rpc.call(first, :erlang, :get_cookie, [])
+    assert is_atom(partition_cookie)
+    refute partition_cookie == :erlang.get_cookie()
+
     for node <- partition do
-      assert String.to_atom(cookie) == :rpc.call(node, :erlang, :get_cookie, [])
+      assert partition_cookie == :rpc.call(node, :erlang, :get_cookie, [])
     end
+
+    assert Schism.partition(rest, cookie) == rest
+    assert partition_cookie == :rpc.call(hd(rest), :erlang, :get_cookie, [])
+    assert Schism.heal(partition) == partition
+  end
+
+  test "reuses cookie atoms across repeated partitions", %{nodes: [first | _]} do
+    Schism.partition([first], "cookie-pool-warm-up")
+    Schism.heal([first])
+    atom_count = :erlang.system_info(:atom_count)
+
+    for index <- 1..100 do
+      Schism.partition([first], "bounded-cookie-test-#{index}")
+      Schism.heal([first])
+    end
+
+    assert :erlang.system_info(:atom_count) == atom_count
   end
 
   test "heals a partition and restores the manager cookie", %{nodes: nodes} do
