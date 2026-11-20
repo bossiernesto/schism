@@ -1,8 +1,10 @@
 # Schism
 
-¿Querés probar qué hace tu aplicación cuando algunos nodos BEAM dejan de
-verse entre sí? Schism te ayuda a simular esa situación desde un test, sin
-tener que andar cortando conexiones de red a mano.
+Schism sirve para simular particiones de red entre nodos BEAM (Erlang o
+Elixir). Es útil cuando querés probar qué hace tu sistema cuando algunos
+nodos dejan de verse entre sí, sin tener que cortar conexiones de red reales.
+
+Está pensado para tests y desarrollo, no para usarse en producción.
 
 La idea es sencilla: elegís qué nodos van juntos, Schism los separa del resto
 y después podés volver a unirlos. Está pensado para tests y desarrollo; no lo
